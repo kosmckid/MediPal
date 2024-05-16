@@ -98,7 +98,7 @@ class PractitionerListState extends State<PractitionerList> {
                   Color.fromARGB(255, 191, 200, 255),
                 ],
               ),
-            ),
+            ],
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -134,7 +134,10 @@ class PractitionerListState extends State<PractitionerList> {
             : const Center(
                 child: CircularProgressIndicator(),
               ),
-      ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }

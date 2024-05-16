@@ -1,6 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medipal/constant/images.dart';
+import 'package:medipal/objects/practitioner.dart';
+import 'package:medipal/pages/account_details.dart';
+//import 'package:medipal/objects/appointment_patient.dart';
+import 'package:medipal/pages/appointment_page.dart';
+import 'package:medipal/pages/dashboard.dart';
+import 'package:medipal/pages/patient_list.dart';
+import 'package:medipal/pages/patient_form.dart';
+import '../objects/patient.dart';
+import 'package:medipal/pages/languageRegionSelect.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:medipal/pages/language_constants.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -54,24 +65,34 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Color(0xFF6D98EB), // Light blue at the bottom
-                    Color.fromARGB(255, 192, 212, 248), // White at top
-                  ],
-                ),
-              ),
+              color: Colors.white,
             ),
             Padding(
               padding: EdgeInsets.only(top: 20, left: 5, right: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 50, // Fixed width for back arrow
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back,
+                              color: Colors.black, size: 40),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 100.0,
+                        width: 100.0,
+                        child: Image.asset(
+                          myImage,
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
@@ -91,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: 7,
                         ), // Add some space between the image and the text
                         Text(
-                          'Settings',
+                          translation(context).settings,
                           style: TextStyle(
                             fontSize: 45,
                             fontWeight: FontWeight.bold,
@@ -107,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                   SingleChildScrollView(
                     child: ListView(
                       shrinkWrap: true,
@@ -150,7 +171,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                                       left:
                                                           20.0), // Add 20 pixels of padding to the left side
                                                   child: Text(
-                                                    'Preferences',
+                                                    translation(context)
+                                                        .preferences,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 40.0),
@@ -169,7 +191,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   trailing: Image.asset(
                                                       'assets/arrow.png'),
                                                   title: Text(
-                                                    'Language and Region',
+                                                    translation(context)
+                                                        .languageAndRegion,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 25.0,
@@ -183,6 +206,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   ),
                                                   onTap: () {
                                                     // Navigate to Account settings page
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LanguageRegionSelect(),
+                                                      ),
+                                                    );
                                                   },
                                                 ),
                                               ),
@@ -199,14 +229,54 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   trailing: Image.asset(
                                                       'assets/arrow.png'),
                                                   title: Text(
-                                                    'Account',
+                                                    translation(context)
+                                                        .account,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 25.0,
                                                     ),
                                                   ),
                                                   subtitle: Text(
-                                                    'Email, Password Change',
+                                                    translation(context)
+                                                        .emailPasswordChange,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  onTap: () async {
+                                                    // Navigate to Account settings page
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AccountInfoPage(userUid: FirebaseAuth.instance.currentUser!.uid),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.all(5.0),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF7f97ed),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          35.0),
+                                                ),
+                                                child: ListTile(
+                                                  trailing: Image.asset(
+                                                      'assets/arrow.png'),
+                                                  title: Text(
+                                                    translation(context)
+                                                        .security,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25.0,
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    translation(context)
+                                                        .privacySettingsForPatientDataAccess,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                     ),
@@ -228,36 +298,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   trailing: Image.asset(
                                                       'assets/arrow.png'),
                                                   title: Text(
-                                                    'Security',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 25.0,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    'Privacy Settings for Patient Data Access',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  onTap: () {
-                                                    // Navigate to Security settings page
-                                                  },
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.all(5.0),
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF7f97ed),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          35.0),
-                                                ),
-                                                child: ListTile(
-                                                  trailing: Image.asset(
-                                                      'assets/arrow.png'),
-                                                  title: Text(
-                                                    'Notifications',
+                                                    translation(context)
+                                                        .notifications,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 25.0,
@@ -277,6 +319,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             ],
                                           ),
                                         ),
+                                        SizedBox(height: 10,),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Color(0xFF1F56DE),
@@ -287,7 +330,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                             ),
                                           ),
                                           child: Text(
-                                            'Logout',
+                                            //'Logout',
+                                            translation(context).logout,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Colors.white,

@@ -99,7 +99,7 @@ class PatientListState extends State<PatientList> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: Text(
-          'All Patient List',
+          'All Patients List',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -146,24 +146,28 @@ class PatientListState extends State<PatientList> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 0),
-                hintText: 'Search by name...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                filled: true,
-                fillColor: const Color.fromARGB(143, 255, 255, 255),
-              ),
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 0),
+                      hintText: 'Search by name...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      filled: true,
+                      fillColor: const Color.fromARGB(143, 255, 255, 255),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              )),
         ),
       ),
       body: _patients.isNotEmpty

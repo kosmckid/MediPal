@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:medipal/objects/patient.dart';
 import 'package:medipal/objects/practitioner.dart';
 import 'package:medipal/pages/patient_data.dart';
@@ -223,27 +224,31 @@ class PractitionerPatientsState extends State<PractitionerPatients> {
           child: Row(
             children: [
               Expanded(
-                  child: Column(
-                children: [
-                  TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value.toLowerCase();
-                      });
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 0),
-                      hintText: 'Search by name...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      filled: true,
-                      fillColor: const Color.fromARGB(143, 255, 255, 255),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              )),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Column(
+                      children: [
+                        TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              _searchQuery = value.toLowerCase();
+                            });
+                          },
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(15, 20, 10, 0),
+                            hintText: 'Search by name...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(143, 255, 255, 255),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    )),
+              ),
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(

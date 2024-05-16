@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 // firebase
 import 'package:firebase_core/firebase_core.dart'; // firebase core
@@ -17,6 +18,10 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart'; //
 // pages
 import 'package:medipal/pages/patient_form.dart';
 import 'package:medipal/pages/settings.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:medipal/pages/languageRegionSelect.dart';
+import 'package:medipal/pages/language_constants.dart';
 
 void main() async {
   // initialize firebase
@@ -29,8 +34,34 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>()!;
+    state?.setLocale(newLocale);
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  setLocale(Locale locale) {
+    setState(
+      () {
+        _locale = locale;
+      },
+    );
+
+    @override
+    void didChangeDependencies() {
+      getLocale().then((locale) => setLocale(locale));
+      super.didChangeDependencies();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +72,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => LoginPage(),
         '/Login': (context) => LoginPage(),
         '/SignUp': (context) => SignUpPage(),
         '/PatientForm': (context) => PatientForm(patient: Patient()),
@@ -56,8 +89,9 @@ class MyApp extends StatelessWidget {
         '/Settings': (context) => SettingsPage(),
         '/Home': (context) => HomeTestPage(),
         '/UserList': (context) => PractitionerList(),
-
+        '/LanguageRegionSelect': (context) => LanguageRegionSelect(),
       },
+      locale: _locale,
     );
   }
 }
@@ -100,6 +134,7 @@ class HomePage extends StatelessWidget {
             ButtonWidget('Settings', '/Settings'),
             ButtonWidget('Home', '/Home'),
             ButtonWidget('UserList', '/UserList'),
+            ButtonWidget('LanguageRegionSelect', '/LanguageRegionSelect'),
             /* FirebaseAuth.instance.currentUser != null
                 ? Align(
                     alignment: Alignment.bottomCenter,
